@@ -55,3 +55,58 @@ const posts = [
         "created": "2021-03-05"
     }
 ];
+
+let postContent = ''
+
+posts.forEach((post) => {
+    postContent += `
+    <div class="post">
+            <div class="post__header">
+                <div class="post-meta">                    
+                    <div class="post-meta__icon">
+                        <img class="profile-pic" src="${post.author.image}" alt="${post.author.name}">                    
+                    </div>
+                    <div class="post-meta__data">
+                        <div class="post-meta__author">${post.author.name}</div>
+                        <div class="post-meta__time">${post.created}</div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="post__text">${post.content}.</div>
+            <div class="post__image">
+                <img src="${post.media}" alt="">
+            </div>
+            <div class="post__footer">
+                <div class="likes js-likes">
+                    <div class="likes__cta">
+                        <a class="like-button  js-like-button" href="#" data-postid="${post.id}" id="like-button-${post.id}">
+                            <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                            <span class="like-button__label">Mi Piace</span>
+                        </a>
+                    </div>
+                    <div class="likes__counter">
+                        Piace a <b id="like-counter-${post.id}" class="js-likes-counter">${post.likes}</b> persone
+                    </div>
+                </div> 
+            </div>            
+        </div>`
+})
+
+document.getElementById('container').innerHTML = postContent
+
+
+posts.forEach((post) => {
+    let btnLike = document.getElementById(`like-button-${post.id}`);
+    let likeCounter = document.getElementById(`like-counter-${post.id}`);
+    btnLike.addEventListener('click', function(event) {
+        event.preventDefault();
+        if (!btnLike.classList.contains('like-button--liked')) {
+            btnLike.classList.add('like-button--liked');
+            post.likes++;
+        } else {
+            btnLike.classList.remove('like-button--liked');
+            post.likes--;
+        }
+        likeCounter.innerHTML = post.likes;
+    });
+})
